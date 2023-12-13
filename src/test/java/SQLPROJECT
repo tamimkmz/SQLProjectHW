@@ -1,0 +1,157 @@
+        SQL Worksheet from oracle live projectHW.
+        NOTE: DO  NOT  TRY  TO  FIX  ANY  THING  LEAVE  THEM  AS  IS !!!!!
+        select
+        "DEPTNO",
+        "DNAME",
+        "LOC"
+        from SCOTT."DEPT";
+        #1. How can you display all the data in Departments table?
+        select * from hr. Departments;
+        #2. How can you display department id from Employees table?
+        select distinct id from hr. employees;
+        #3. How can you display all the phone numbers from Employees?
+        select * from hr. employees;
+        #4. How can you display last name and hire date for all Employees?
+        select last_name, hire_date from hr. employees;
+        #5. Please display department id and department name
+        select department_id, department_name from hr. departments;
+        #6. How can we find the salary of an employee whos is 120?
+        select salary from hr. employees where employee_id=120;
+        #7. How can you display unique job ids in the company from the employees table?
+        select distinct job_id from hr. employees;
+        #8. How to display first name, job id, salary for all employees who earn
+        less than or equal to 10000 monthly?
+        select first_name, job_id, salary from hr. employees where salary>=10000;
+        #9. How to display all the information for Stock Clerks?
+        select * from hr.employees where job_id = 'ST_CLERK';
+        #10. How to display information about employees who report to the
+        manager 114?
+        select * from hr. employees where manager_id=114;
+
+        #11. How to figure out first name, last name, department id of employees
+        #that do not get commission and display last names in alphabetical order.
+        select FIRST_NAME,LAST_NAME,DEPARTMENT_ID from hr.employees where COMMISSION_PCT is null order by LAST_NAME asc;
+        #12. How to display all the information for IT Programmers showing the
+        #highest paying employee on top?
+        select * from hr. employees where job_id='IT_PROG' ORDER BY salary DESC;
+        #13. How to display all employees who were hired on June 17th, 2003
+        select * from hr. employees where (hire_date) = TO_DATE('2003-06-17', 'YYYY-MM-DD');
+        #14. How to display first name, Salary, and job ID of employees who earn
+        #more than or equal to 4000 or working as IT programmers.
+        select first_name, salary, Job_id from hr. employees where salary>= 4000 OR job_id = 'IT_PROG';
+        #15. How can we see the first name, Salary, and job ID of employees who
+        #earn more than 3000 and work as stock clerks? Also, need to see returned data sorted by name.
+        select first_name, salary, job_id from hr. employees where salary > 3000 AND job_id = 'ST_CLERK'
+        ORDER BY first_name;
+        #16. How can we find all employees who do not work in Department 50 and are not stock clerks?
+        select * from hr. employees WHERE department_id != 50 AND job_id != 'ST_CLERK';
+        #17. How can we see all people whose job ID belongs to Sales?
+        select * from hr. employees where job_id LIKE 'SA%';
+        select * from hr. employees where department_id in(50, 60, 80);
+
+
+        #18. How can we display all employees who work for Departments 50, 60, 80
+        select * from hr. employees where DEPARTMENT_ID IN (50, 60, 80)
+        #19. Verify everyone who was hired on June of 2002. Please display in ascending order by name.
+        select * from hr. employees where HIRE_DATE like '%JUN-02' order by FIRST_NAME asc;
+        #20. Display all employees whose last name ends with ‘a’.
+        select * from hr. employees where LAST_NAME like '%a';
+        #21. Verify all employees who were hired from 17 June 2003 to 05 February 2006.
+        select * from hr. employees where HIRE_DATE between '17 JUN-2003' AND '05 FEB-2006';
+        #22. Verify all the employees who are programmers, clerks and hr.
+        #select JOB_ID from hr.jobs where JOB_TITLE in ('Programmer', 'Clerk', 'HR');
+
+        SELECT j.JOB_ID, COUNT(e.employee_id) as EmployeeCount FROM hr.jobs j
+        LEFT JOIN hr.employees e ON j.JOB_ID = e.JOB_ID
+        WHERE j.JOB_TITLE IN ('Stock Clerk', 'Shipping Clerk', 'Purchasing Clerk', 'Programmer', 'Human Resources Representative') GROUP BY j.JOB_ID;
+        #23. Display all countries except Germany, Italy and Kuwait.
+        select * from hr. countries where COUNTRY_NAME not in('Germany', 'Italy', 'Kuwait')
+        #24. Display all department names that start with ‘C’ and don’t forget to sort
+        #results by department id in descending order.
+        select * from hr. departments where DEPARTMENT_NAME LIKE 'C%' order by 'department_id' desc;
+        #25. Display all employees’ first names in which the third letter of the name is “u”.
+        select * from hr. employees where FIRST_NAME LIKE '__u%';
+        #26. Display last name in uppercase, first name in lowercase and email in init capital
+        select UPPER(LAST_NAME), lower(FIRST_NAME),initcap(EMAIL) from hr. employees;
+        #27. Verify how many employees don’t get the commission?
+        select * from hr. employees where COMMISSION_PCT IS NULL;# SEE the total count at the BOTTOM of output
+        #select count(*) from hr.employees where COMMISSION_PCT is null;
+        #28. Display maximum salary for each job ids?
+        select JOB_ID, MAX(SALARY) from hr. employees group by JOB_ID;
+        #29. Display the number of people, average salary, and max salary in each department
+        select COUNT(*), AVG(SALARY), MAX(SALARY) from hr. employees group by DEPARTMENT_ID;
+        #select COUNT(*), AVG(SALARY), MAX(SALARY) from hr. employees order by DEPARTMENT_ID;
+        #30. How can we find how many IT Programmers work in the company?
+        select count(*) AS IT_Programmers_COUNT from hr. employees where job_id ='IT Programmers';
+        #select JOB_ID from hr.jobs where JOB_TITLE = 'Programmer';
+        #select count(*)from hr. employees where job_id ='IT Programmers';
+        #31 How many employees first Name starts with A?
+        select count(*) FirstName_starts_With_A from hr.employees where  FIRST_NAME like 'A%';
+        #32. Can you find the average salary in each department? Please sort results by the salary
+        select d.DEPARTMENT_NAME, AVG(e. Salary) from hr. employees e join hr. departments d
+        ON e.DEPARTMENT_ID = d.DEPARTMENT_ID group by DEPARTMENT_NAME order by AVG(e.Salary);
+        #33. Display how many Sales representatives, accountants, and Stock managers are hired by the company.
+        select JOB_TITLE, count(EMPLOYEE_ID) Number_Of_Employees from hr.EMPLOYEES e join  hr.JOBS j on e.JOB_ID = j.JOB_ID
+        where JOB_TITLE in ('Sales Representative', 'Accountant', 'Stock Manager') group by JOB_TITLE;
+        #34. How can you find out AVG salary for employees per department where the average salary is more than 6500
+        select * from hr. employees e join hr. departments d on e.DEPARTMENT_ID = d.DEPARTMENT_ID;
+        select d.DEPARTMENT_NAME, AVG(e. SALARY) from hr. employees e
+        left join hr. departments d on e.DEPARTMENT_ID = d.DEPARTMENT_ID having AVG(e.SALARY) > 6500 group by DEPARTMENT_NAME;
+        #35. How can I see the number of employees that work in a department whose total number is more than 5 people?
+        select d.DEPARTMENT_NAME, count(e.DEPARTMENT_ID) as Number_of_employees from hr. employees e
+        join hr. departments d on e.DEPARTMENT_ID = d.DEPARTMENT_ID group by d.DEPARTMENT_NAME having count(e.DEPARTMENT_ID)>5;
+        #36. How can I see the max salary for all job ids where the max salary will be more than 4000?
+        select JOB_ID, JOB_TITLE, MAX_salary from hr.JOBS where MAX_salary>4000;
+        #37. Please display the max highest salaries per job id on top.
+        select job_id, job_title, max_salary from hr.jobs order by max_salary desc;
+        #38. How can I find out the average salary of people working for
+        departments 80 through 120, but I want to see only those departments
+        where the average salary is between 8000 to 10000?
+        select * from hr. employees;
+        select DEPARTMENT_ID, AVG(SALARY) from hr.employees
+        where DEPARTMENT_ID between 80 and 120 group by DEPARTMENT_ID having AVG(SALARY) between 8000 and 10000;
+        #39. List all employees who were hired after Mavris?
+        select HIRE_DATE from hr.employees where LAST_NAME = 'Mavris';
+        select * from hr.employees where HIRE_DATE > (select HIRE_DATE from hr.employees where LAST_NAME = 'Mavris');
+        #40. How to retrieve information about the employee who earns the lowest salary?
+        select * from hr. employees where salary=(select min(salary) from hr. employees);
+        #41. Display all country names that belong to Europe?
+        select REGION_ID from hr.regions where REGION_NAME ='Europe';
+        select * from hr.countries where REGION_ID = (select REGION_ID from hr.regions where REGION_NAME ='Europe');
+        #42. Count employees who earn more than the average salary?
+        SELECT COUNT(FIRST_NAME) AS num_employees_above_avg_salary FROM hr.employees
+        WHERE salary > (SELECT AVG(salary) FROM hr.employees);
+        select FIRST_NAME, LAST_NAME, DEPARTMENT_NAME from hr.EMP_DETAILS_VIEW where FIRST_NAME = 'Steven' and LAST_NAME = 'King';
+        43. How to display the name of the department where Steven King works?
+        select FIRST_NAME, LAST_NAME, DEPARTMENT_NAME from hr.EMP_DETAILS_VIEW where FIRST_NAME = 'Steven' and LAST_NAME = 'King';
+        #44. Can you display information of employees who work in Seattle?
+        select * from hr.emp_details_view where CITY = 'Seattle';
+        #45. How can you display the third-highest salary?
+        select * from hr. employees ORDER BY SALARY DESC OFFSET 2 ROWS FETCH NEXT 1 ROW ONLY;
+        #46. Display the employee ID, last name, and department name for each employee.
+        select e.EMPLOYEE_ID, e.LAST_NAME, d.DEPARTMENT_NAME from hr. employees e join hr. departments d on e.DEPARTMENT_ID = d.DEPARTMENT_ID;
+        #47. Display street address, city, country id, and country name
+        select L.STREET_ADDRESS, L.CITY, C.COUNTRY_ID, C.COUNTRY_NAME from HR. LOCATIONS L inner join HR.COUNTRIES C on L.COUNTRY_ID=C.COUNTRY_ID;
+        #48. Show the employee ID, last name, job ID, salary, department ID, and department name for employees who are IT Programmers
+        select e.EMPLOYEE_ID, e.LAST_NAME, e.JOB_ID, e.SALARY, e.DEPARTMENT_ID, d.DEPARTMENT_NAME from hr.EMPLOYEES e
+        join hr.DEPARTMENTS d on e.DEPARTMENT_ID = d.DEPARTMENT_ID where JOB_ID = (select JOB_ID from hr.JOBS where JOB_TITLE = 'Programmer');
+        #49. Display department ID, department names, country ID, and country names.
+        select d.DEPARTMENT_ID,d.DEPARTMENT_NAME,e.COUNTRY_ID,e.COUNTRY_NAME from hr. departments d join hr.emp_details_view e on d.DEPARTMENT_NAME=e.DEPARTMENT_NAME;
+        #50. Display employee ID, department name, and department ID for departments 60 and 80.
+        select e.EMPLOYEE_ID, d.DEPARTMENT_NAME,e.DEPARTMENT_ID
+        from hr. employees e join hr. departments d on d.DEPARTMENT_ID=e.DEPARTMENT_ID where e.DEPARTMENT_ID in ('60','80');
+        #51. Display employee ID, last name, salary, and department name using table alias and sort results based on salary.
+        select e.EMPLOYEE_ID,e.LAST_NAME,e.SALARY,d.DEPARTMENT_NAME from hr. employees e
+        join hr. departments d on e.DEPARTMENT_ID=d.DEPARTMENT_ID order by e.SALARY;
+        #52. Display employees employee ID, first name, last name, department name, and country name
+        SELECT EMPLOYEE_ID, FIRST_NAME, LAST_NAME, DEPARTMENT_NAME, COUNTRY_NAME FROM hr.emp_details_view;
+
+        53. Display department id, department names, country id and country
+        names.
+        #54. Display employee ID, department name, and department ID for
+        departments 60 and 80.
+        #55. Display employee ID, last name, salary, and department name and sort
+        results based on salary.
+        #Repeated Question 56. Display employees employee ID, first name, last name, department name, and country name
+
+        SELECT EMPLOYEE_ID, FIRST_NAME, LAST_NAME, DEPARTMENT_NAME, COUNTRY_NAME FROM hr.emp_details_view;
